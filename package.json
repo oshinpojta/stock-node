@@ -6,5 +6,24 @@
     "express": "^4.18.2",
     "morgan": "^1.10.0",
     "passport-google-oauth20": "^2.0.0"
-  }
+  },
+  "name": "stock-node",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oshinpojta/stock-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oshinpojta/stock-node/issues"
+  },
+  "homepage": "https://github.com/oshinpojta/stock-node#readme",
+  "description": ""
 }
