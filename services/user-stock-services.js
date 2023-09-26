@@ -45,7 +45,7 @@ exports.addUserStock = async (user_id, stock_id) => {
 exports.deleteUserStock = async (user_id, stock_id) => {
     return new Promise((resolve, reject)=>{
         try {
-            userStocks = userStocks.filter(item => item.user_id == user_id && item.stock_id == stock_id);
+            userStocks = userStocks.filter(item => !(item.user_id == user_id && item.stock_id == stock_id));
             resolve(true)
         } catch (error) {
             console.log(`ERROR : ${path.basename(__dirname)}/${path.basename(__filename)}/${__function}\n`,error);

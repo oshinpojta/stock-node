@@ -1,6 +1,8 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport")
 
+// https://stackoverflow.com/questions/72375564/typeerror-req-session-regenerate-is-not-a-function-using-passport
+// Error in Session Manager
 passport.use(
     new GoogleStrategy({
         clientID:process.env.GOOGLE_CLIENT_ID,

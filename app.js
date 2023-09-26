@@ -67,12 +67,16 @@ const io = SocketIO(server, {
 app.use(cookieSession({
     name:"session",
     keys:["cyberwolve"],
-    maxAge:100*60*60*24
+    secret: 'secret',
+    saveUninitialized: false, 
+    resave: false,
+    maxAge:5000
 }))
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
-    credentials: true
+    credentials: true,
+    origin : [process.env.CLIENT_URL]
 }));
 app.use(bodyParser.json());
 app.use(morgan("combined", { stream : accessLogStream}));
@@ -117,26 +121,39 @@ io.on("connection", async (socket) => {
     }
 
     // Consumer for different stock topics
-    socket.on("subscribe", (stock, do_subscribe, callback)=>{
-        const user = socket.user;
-        if(do_subscribe){
-            userStockServices.addUserStock(user.id, stock.id)
-            socket.join(`${stock.name}-orders`)
-        }else{
-            userStockServices.deleteUserStock(user.id, stock.id);
-            socket.leave(`${stock.name}-orders`)
-        }
-        if(callback){
-            callback(true)
+    socket.on("subscribe", ( data, callback)=>{
+        try {
+            if(!data ){
+                callback(false)
+            }else{
+                let { stock, is_subscribed } = data;
+                // console.log(data);
+                const user = socket.user;
+                if(is_subscribed){
+                    userStockServices.addUserStock(user.id, stock.id);
+                    socket.join(`${stock.name}-orders`);
+                }else{
+                    userStockServices.deleteUserStock(user.id, stock.id);
+                    socket.leave(`${stock.name}-orders`);
+                }
+                // let roomSize = io.sockets.adapter.rooms.get(`${stock.name}-orders`);
+                // console.log(roomSize, io.sockets.adapter.rooms.length);
+                if(callback){
+                    callback(true)
+                }
+            }
+        } catch (error) {
+            console.log(error)
         }
     });
 
     socket.on("error", ()=>{
-        console.log("ERRORED")
+        console.log("ERRORED", socket.id)
     })
 
     socket.on("disconnect", ()=>{
-        console.log("disconnected", socket.id);
+        // console.log("disconnected", socket.id);
+        // console.log(io.sockets.adapter.rooms.size);
     })
 })
 
