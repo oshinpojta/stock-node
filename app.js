@@ -150,7 +150,8 @@ const createOrders = () => {
             let newOrder = {
                 id : stocksArray[i].orders.length+1,
                 count : Math.round(Math.random()*10000),
-                value : numberGenerator(prevOrder.value)
+                value : numberGenerator(prevOrder.value),
+                executed_at : new Date().getTime()
             }
             stocksArray[i].orders.push(newOrder);
             if(stocksArray[i].orders.length > 3700){
