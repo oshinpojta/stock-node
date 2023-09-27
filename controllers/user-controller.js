@@ -92,20 +92,20 @@ exports.handleGoogleCallback = async (req, res) => {
         // set-cookies
 
         res.cookie("user", JSON.stringify(user),{
-            maxAge : 900000*4*24, // 15mins*4 = 1hr *24
-            // httpOnly : true,
-            // domain : "localhost",
-            // path : "/",
-            // sameSite : "strict",
-            // secure : false
+            maxAge : 900000*4*24, //15mins*1hr *24
+            httpOnly : true,
+            domain : ".onrender.com",
+            path : "/",
+            sameSite : "lax",
+            secure : true
         });
         res.cookie("googleAuth", "true", {
             maxAge : 900000*4*24, //15mins*1hr *24
-            // httpOnly : true,
-            // domain : "localhost",
-            // path : "/",
-            // sameSite : "strict",
-            // secure : false
+            httpOnly : true,
+            domain : ".onrender.com",
+            path : "/",
+            sameSite : "lax",
+            secure : true
         })
         res.redirect(process.env.CLIENT_URL);
 
