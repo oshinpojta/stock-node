@@ -161,7 +161,7 @@ const createOrders = () => {
         }
         setTimeout(() => {
             createOrders()
-        }, 1000);
+        }, 600);
     }, 1000)
 }
 

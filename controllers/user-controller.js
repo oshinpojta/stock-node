@@ -87,33 +87,25 @@ exports.handleGoogleCallback = async (req, res) => {
         let token = jwt.sign({ user_id : user.id, created_at : new Date().getTime() }, process.env.JWT_SECRET, { expiresIn: "1d" })
         user = await userServices.setTokenByUserId(user.id, token);
         user.created_at = new Date().getTime();
-
-        // let userStocks = await userStockServices.getUserStocksByUserId(user.id);
-        // let stocks = stockServices.getStocks();
-        // stocks = stocks.map((stock) => {
-        //     let isStock = userStocks.filter(item => item.stock_id == stock.id);
-        //     stock.is_subscribed = isStock.length>0 ? true : false;
-        //     return stock;
-        // })
-
+        
         user.picture = googleUser.picture;
         // set-cookies
 
         res.cookie("user", JSON.stringify(user),{
             maxAge : 900000*4*24, // 15mins*4 = 1hr *24
-            httpOnly : false,
-            domain : "stock-react.netlify.app",
-            path : "/",
+            // httpOnly : true,
+            // domain : "localhost",
+            // path : "/",
             // sameSite : "strict",
-            secure : false
+            // secure : false
         });
         res.cookie("googleAuth", "true", {
             maxAge : 900000*4*24, //15mins*1hr *24
-            httpOnly : false,
-            domain : "stock-react.netlify.app",
-            path : "/",
+            // httpOnly : true,
+            // domain : "localhost",
+            // path : "/",
             // sameSite : "strict",
-            secure : false
+            // secure : false
         })
         res.redirect(process.env.CLIENT_URL);
 
