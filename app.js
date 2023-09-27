@@ -6,14 +6,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require("fs");
 const morgan = require("morgan");
-const cookieSession = require("cookie-session");
-const passport = require("passport");
 const http = require("http");
 const SocketIO = require("socket.io");
 
 const authMiddleware = require("./middlewares/authenticate");
-const passportSetup = require("./utils/passport");
-// const orderGenerator = require("./utils/order-generator");
 const stocksArray = require("./data/stocks");
 const stockServices = require("./services/stock-services");
 const userStockServices = require("./services/user-stock-services");
@@ -53,7 +49,6 @@ const accessLogStream = fs.createWriteStream(
     {flags : "a"}
 );
 
-const authRoutes = require("./routes/auth-routes");
 const userRoutes = require("./routes/user-routes");
 
 const app = express();
@@ -64,16 +59,6 @@ const io = SocketIO(server, {
     }
   });
 
-app.use(cookieSession({
-    name:"session",
-    keys:["cyberwolve"],
-    secret: 'secret',
-    saveUninitialized: false, 
-    resave: false,
-    maxAge:5000
-}))
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(cors({
     credentials: true,
     origin : [process.env.CLIENT_URL]
@@ -81,7 +66,6 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(morgan("combined", { stream : accessLogStream}));
 
-app.use("/auth", authRoutes)
 app.use("/users", userRoutes);
 app.use("/", (req, res) => {
     res.json({ success : true, msg : "Server Called!" });
@@ -169,6 +153,9 @@ const createOrders = () => {
                 value : numberGenerator(prevOrder.value)
             }
             stocksArray[i].orders.push(newOrder);
+            if(stocksArray[i].orders.length > 3700){
+                stocksArray[i].orders = stocksArray[i].orders.slice(-3600)
+            }
             io.to(`${stocksArray[i].name}-orders`).emit("order", { id : stocksArray[i].id, orders : stocksArray[i].orders });
         }
         setTimeout(() => {
