@@ -101,19 +101,19 @@ exports.handleGoogleCallback = async (req, res) => {
 
         res.cookie("user", JSON.stringify(user),{
             maxAge : 900000*4*24, // 15mins*4 = 1hr *24
-            // httpOnly : true,
+            httpOnly : false,
             // domain : "localhost",
-            // path : "/",
+            path : "/",
             // sameSite : "strict",
-            // secure : false
+            secure : false
         });
         res.cookie("googleAuth", "true", {
             maxAge : 900000*4*24, //15mins*1hr *24
-            // httpOnly : true,
+            httpOnly : false,
             // domain : "localhost",
             // path : "/",
             // sameSite : "strict",
-            // secure : false
+            secure : false
         })
         res.redirect(process.env.CLIENT_URL);
 
