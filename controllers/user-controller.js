@@ -102,7 +102,7 @@ exports.handleGoogleCallback = async (req, res) => {
         res.cookie("user", JSON.stringify(user),{
             maxAge : 900000*4*24, // 15mins*4 = 1hr *24
             httpOnly : false,
-            // domain : "localhost",
+            domain : "stock-react.netlify.app",
             path : "/",
             // sameSite : "strict",
             secure : false
@@ -110,8 +110,8 @@ exports.handleGoogleCallback = async (req, res) => {
         res.cookie("googleAuth", "true", {
             maxAge : 900000*4*24, //15mins*1hr *24
             httpOnly : false,
-            // domain : "localhost",
-            // path : "/",
+            domain : "stock-react.netlify.app",
+            path : "/",
             // sameSite : "strict",
             secure : false
         })
