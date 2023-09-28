@@ -92,20 +92,20 @@ exports.handleGoogleCallback = async (req, res) => {
         // set-cookies
 
         res.cookie("user", JSON.stringify(user),{
-            maxAge : 900000*4*24, //15mins*1hr *24
-            httpOnly : true,
-            domain : ".netlify.app",
-            path : "/",
-            sameSite : "lax",
-            secure : true
+            maxAge : 900000*4*24, // 15mins*4 = 1hr *24
+            // httpOnly : true,
+            // domain : "localhost",
+            // path : "/",
+            // sameSite : "strict",
+            // secure : false
         });
         res.cookie("googleAuth", "true", {
             maxAge : 900000*4*24, //15mins*1hr *24
-            httpOnly : true,
-            domain : ".netlify.app",
-            path : "/",
-            sameSite : "lax",
-            secure : true
+            // httpOnly : true,
+            // domain : "localhost",
+            // path : "/",
+            // sameSite : "strict",
+            // secure : false
         })
         res.redirect(process.env.CLIENT_URL);
 
